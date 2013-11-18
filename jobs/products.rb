@@ -1,8 +1,11 @@
 require './lib/goodeggs'
 
 class GoodEggsDashboard
-  def initialize(client, event_sender)
-    @client = client
+  attr_accessor :client
+  def initialize(foodshed, event_sender)
+    @client = GoodEggs.new
+    @client.foodshed = foodshed
+    @foodshed = foodshed
     @event_sender = event_sender
     @product_series = {}
     @organic_breakdown = {organic: 0, non_organic: 0}
@@ -28,8 +31,9 @@ class GoodEggsDashboard
     send_event('organic_products', value: data)
   end
 
-  def send_event(*args)
-    @event_sender.call(*args)
+  def send_event(key, data)
+    key += "_#{@foodshed}" unless key =~ /-count/
+    @event_sender.call(key, data)
   end
 
   def histogram_output
@@ -49,23 +53,24 @@ class GoodEggsDashboard
 end
 
 def say(message)
-  $stderr << "\e[33m#{message}\e[0m"
+  $stderr << "\e[33m#{message}\e[0m\n"
 end
 
-SCHEDULER.every '5m', :first_in => 0 do
-  say "Scheduler started"
-  good_eggs = GoodEggs.new
-  good_eggs.foodshed = 'sfbay'
-  dashboard = GoodEggsDashboard.new(good_eggs, self.method(:send_event))
-  weekdays = GoodEggs.coming_weekdays
-  GoodEggs::CATEGORIES.reduce([]) do |series, category|
-    Parallel.map(weekdays, :in_threads => 5) do |day|
-      product_count = good_eggs.products(day, category).length
-      organic_count = good_eggs.organic_products(day, category).length
+GoodEggs::SHEDS.each do |shed|
+  SCHEDULER.every '5m', :first_in => 0 do
+    say "#{shed} Scheduler started"
+    dashboard = GoodEggsDashboard.new(shed, self.method(:send_event))
+    good_eggs = dashboard.client
+    weekdays = GoodEggs.coming_weekdays
+    GoodEggs::CATEGORIES.reduce([]) do |series, category|
+      Parallel.map(weekdays, :in_threads => 5) do |day|
+        product_count = good_eggs.products(day, category).length
+        organic_count = good_eggs.organic_products(day, category).length
 
-      dashboard.update_day_counts(category, day, product_count)
-      dashboard.update_organic_breakdown(product_count, organic_count)
+        dashboard.update_day_counts(category, day, product_count)
+        dashboard.update_organic_breakdown(product_count, organic_count)
+      end
+      dashboard.update_historgram
     end
-    dashboard.update_historgram
   end
 end
