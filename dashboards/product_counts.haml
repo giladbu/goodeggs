@@ -25,6 +25,9 @@
 .gridster
   %ul
     %li{'data-row' => 1, 'data-col' => 1, 'data-sizex' => 4, 'data-sizey' => 1}
-      %div{'data-id' => 'product_counts', 'data-view' => 'Histogram', 'data-title' => 'Product Totals'}
-    %li{'data-row' => 2, 'data-col' => 1, 'data-sizex' => 4, 'data-sizey' => 1}
-      %div{'data-id' => 'product_counts', 'data-view' => 'Histogram', 'data-title' => 'Product Histogram', 'data-graphtype' => 'bar'}
+      %div{'data-id' => 'product_counts', 'data-view' => 'Histogram', |
+           'data-title' => 'Product Totals by Category', 'data-graphtype' => 'bar'}
+    %li{'data-row' => 2, 'data-col' => 1, 'data-sizex' => 1, 'data-sizey' => 1}
+      %div{'data-id' => 'product_categories', 'data-view' => 'Pie', 'data-title' => 'Product Categories'}
+    %li{'data-row' => 2, 'data-col' => 2, 'data-sizex' => 1, 'data-sizey' => 1}
+      %div{'data-id' => 'organic_products', 'data-view' => 'Pie', 'data-title' => 'Organic Products'}

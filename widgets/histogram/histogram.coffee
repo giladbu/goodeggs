@@ -6,7 +6,7 @@ class Dashing.Histogram extends Dashing.Widget
     console.log(Dashing.widget_margins)
     width = (Dashing.widget_base_dimensions[0] * container.data("sizex")) + Dashing.widget_margins[0] * 2 * (container.data("sizex") - 1)
     height = (Dashing.widget_base_dimensions[1] * container.data("sizey"))
-    @palette = new Rickshaw.Color.Palette(scheme: 'cool' )
+    @palette = d3.scale.category20()
     @graph = new Rickshaw.Graph(
       element: @node
       width: width
@@ -25,18 +25,15 @@ class Dashing.Histogram extends Dashing.Widget
       d3.time.format('%a% %e')(d)
     x_axis = new Rickshaw.Graph.Axis.Time(graph: @graph, timeUnit: timeUnit)
     y_axis = new Rickshaw.Graph.Axis.Y(graph: @graph, tickFormat: Rickshaw.Fixtures.Number.formatKMBT)
-    if @get("graphtype") != 'bar'
-      hoverDetail = new Rickshaw.Graph.HoverDetail
-        graph: @graph
-        xFormatter: (x) ->
-          timeUnit.formatter(new Date(x * 1000))
-    else
-      @graph.renderer.unstack = true
+    hoverDetail = new Rickshaw.Graph.HoverDetail
+      graph: @graph
+      xFormatter: (x) ->
+        timeUnit.formatter(new Date(x * 1000))
     @graph.render()
 
   onData: (event) ->
     if @graph
-      @palette.runningIndex = 0  # Reset color selection, to get consistent colors
+      colorIndex = 0
       (@graph.series.pop() for series in @graph.series)
-      (@graph.series.push($.extend(series,{color: series.color || @palette.color()})) for series in event.series)
+      (@graph.series.push($.extend(series,{color: series.color || @palette(colorIndex++)})) for series in event.series)
       @graph.render()
