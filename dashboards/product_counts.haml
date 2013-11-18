@@ -3,14 +3,14 @@
 
 :javascript
   $(function() {
-    Dashing.widget_base_dimensions = [300, 250]
-    Dashing.numColumns = 5
+    Dashing.widget_base_dimensions = [300, 250];
+    Dashing.numColumns = 5;
+    Dashing.cycleDashboards({timeInSeconds: 30, stagger: true});
   });
 
 .gridster
   %ul
     - GoodEggs.coming_weekdays.each do |day|
-      - p day
       - weekday_name = day.strftime('%a %m/%d')
       - wday = day.wday
       %li{'data-row' => 1, 'data-col' => wday, 'data-sizex' => 1, 'data-sizey' => 1}
@@ -20,3 +20,11 @@
         - name = GoodEggs.pretty_name(cat)
         %li{'data-row' => index + 2, 'data-col' => wday, 'data-sizex' => 1, 'data-sizey' => 1}
           %div{'data-id' => "#{cat}-#{wday}-count", 'data-view' => 'Number', 'data-title' => name}
+
+
+.gridster
+  %ul
+    %li{'data-row' => 1, 'data-col' => 1, 'data-sizex' => 4, 'data-sizey' => 1}
+      %div{'data-id' => 'product_counts', 'data-view' => 'Histogram', 'data-title' => 'Product Totals'}
+    %li{'data-row' => 2, 'data-col' => 1, 'data-sizex' => 4, 'data-sizey' => 1}
+      %div{'data-id' => 'product_counts', 'data-view' => 'Histogram', 'data-title' => 'Product Histogram', 'data-graphtype' => 'bar'}
