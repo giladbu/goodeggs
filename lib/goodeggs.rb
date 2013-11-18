@@ -11,6 +11,9 @@ class GoodEggs
   base_uri 'goodeggs.com'
 
   attr_accessor :foodshed
+  def initialize(foodshed)
+    self.foodshed = foodshed
+  end
 
   def get_product_listing(params = {})
     pickup_day = self.class.weekday(params.delete(:pickup_day) || 2.days.from_now)

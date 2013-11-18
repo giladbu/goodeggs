@@ -1,11 +1,9 @@
 require './lib/goodeggs'
-require 'parallel'
 
 class GoodEggsDashboard
   attr_accessor :good_eggs, :foodshed
   def initialize(foodshed, event_sender)
-    @good_eggs = GoodEggs.new
-    @good_eggs.foodshed = foodshed
+    @good_eggs = GoodEggs.new(foodshed)
     @foodshed = foodshed
     @event_sender = event_sender
     @product_series = {}
@@ -77,7 +75,7 @@ GoodEggs::SHEDS.each do |shed|
     dashboard = GoodEggsDashboard.new(shed, self.method(:send_event))
     weekdays = GoodEggs.coming_weekdays
     GoodEggs::CATEGORIES.reduce([]) do |series, category|
-      Parallel.map(weekdays, :in_threads => 5) do |day|
+      weekdays.each do |day|
         dashboard.update(day, category)
       end
       dashboard.update_historgram
