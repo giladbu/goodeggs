@@ -71,7 +71,7 @@ def say(message)
 end
 
 GoodEggs::SHEDS.each do |shed|
-  SCHEDULER.every '5m', :first_in => 0 do
+  SCHEDULER.every '30s', :first_in => 10, allow_overlapping: false do
     say "#{shed} Scheduler started"
     dashboard = GoodEggsDashboard.new(shed, self.method(:send_event))
     weekdays = GoodEggs.coming_weekdays
