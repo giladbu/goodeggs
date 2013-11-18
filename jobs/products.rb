@@ -1,4 +1,5 @@
 require './lib/goodeggs'
+require 'parallel'
 
 class GoodEggsDashboard
   attr_accessor :good_eggs, :foodshed

@@ -2,7 +2,6 @@ require 'httparty'
 require 'active_support/time'
 require 'active_support/core_ext/numeric'
 require 'active_support/core_ext/string/inflections'
-require 'parallel'
 
 class GoodEggs
   SHEDS = %i{sfbay nyc nola la}
