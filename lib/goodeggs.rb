@@ -50,6 +50,10 @@ class GoodEggs
     end
   end
 
+  def organic_vendors(day, category)
+    vendors(day, category).select { |vendor| organic?(vendor) }
+  end
+
   def avg_products_count(category)
     category_data = @data.fetch(category, {})
     total_products_count = category_data.reduce(0) {|mem, (date, data)| mem + data['products'].length }
