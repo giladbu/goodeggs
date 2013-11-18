@@ -1,12 +1,15 @@
+- shed ||= 'sfbay'
 - content_for :title do
-  Good Eggs : SF
+  = "Good Eggs : #{shed}"
 
 .gridster
   %ul
     %li{'data-row' => 1, 'data-col' => 1, 'data-sizex' => 4, 'data-sizey' => 1}
-      %div{'data-id' => 'product_counts', 'data-view' => 'Histogram', |
+      %div{'data-id' => "product_counts_#{shed}", 'data-view' => 'Histogram', |
            'data-title' => 'Product Totals by Category', 'data-graphtype' => 'bar'}
     %li{'data-row' => 2, 'data-col' => 1, 'data-sizex' => 1, 'data-sizey' => 1}
-      %div{'data-id' => 'product_categories', 'data-view' => 'Pie', 'data-title' => 'Product Categories'}
+      %div{'data-id' => "shed_#{shed}", 'data-view' => 'Text', 'data-title' => shed}
     %li{'data-row' => 2, 'data-col' => 2, 'data-sizex' => 1, 'data-sizey' => 1}
-      %div{'data-id' => 'organic_products', 'data-view' => 'Pie', 'data-title' => 'Organic Products'}
+      %div{'data-id' => "product_categories_#{shed}", 'data-view' => 'Pie', 'data-title' => 'Product Categories'}
+    %li{'data-row' => 2, 'data-col' => 3, 'data-sizex' => 1, 'data-sizey' => 1}
+      %div{'data-id' => "organic_products_#{shed}", 'data-view' => 'Pie', 'data-title' => 'Organic Products'}

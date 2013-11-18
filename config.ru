@@ -1,3 +1,4 @@
+require 'sinatra/partial'
 require 'dashing'
 
 configure do
@@ -12,6 +13,7 @@ configure do
 end
 
 map Sinatra::Application.assets_prefix do
+  register Sinatra::Partial
   run Sinatra::Application.sprockets
 end
 

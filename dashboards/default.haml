@@ -1,0 +1,26 @@
+- content_for :title do
+  Good Eggs
+
+:javascript
+  $(function() {
+    Dashing.widget_base_dimensions = [300, 250];
+    Dashing.numColumns = 5;
+    Dashing.cycleDashboards({timeInSeconds: 10, stagger: true});
+  });
+
+- GoodEggs::SHEDS.each do |shed|
+  = partial :shed, locals: {shed: shed}
+
+.gridster
+  %ul
+    - GoodEggs.coming_weekdays.each do |day|
+      - weekday_name = day.strftime('%a %m/%d')
+      - wday = day.wday
+      %li{'data-row' => 1, 'data-col' => wday, 'data-sizex' => 1, 'data-sizey' => 1}
+        %div{'data-id' => "name-#{wday}", 'data-view'=> 'Text', 'data-title' => weekday_name}
+
+      - GoodEggs::CATEGORIES.each_with_index do |cat, index|
+        - name = GoodEggs.pretty_name(cat)
+        %li{'data-row' => index + 2, 'data-col' => wday, 'data-sizex' => 1, 'data-sizey' => 1}
+          %div{'data-id' => "#{cat}-#{wday}-count", 'data-view' => 'Number', 'data-title' => name}
+

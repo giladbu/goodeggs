@@ -75,7 +75,6 @@ class Dashing.Pie extends Dashing.Widget
           .attr("height", 10)
           .attr("fill", color(i))
 
-        console.log "wat"
         g.append("text")
           .attr("x", (col * 50) + 15)
           .attr("y", (row + 1) * 15 - 6)
