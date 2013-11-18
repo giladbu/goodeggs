@@ -1,0 +1,71 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  #D0FFFE;
+
+$title-color:       #5E78E6;
+$moreinfo-color:    red;
+$tick-color:        rgba(0, 0, 0, 0.4);
+
+
+// ----------------------------------------------------------------------------
+// Widget-histogram styles
+// ----------------------------------------------------------------------------
+.widget-histogram {
+
+  background-color: $background-color;
+  position: relative;
+
+
+  svg {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+  }
+
+  .title, .value {
+    position: relative;
+    z-index: 99;
+  }
+
+  .title {
+    color: $title-color;
+  }
+
+  .more-info {
+    color: $moreinfo-color;
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: 0;
+  }
+
+  .x_tick {
+    position: absolute;
+    bottom: 0;
+    .title {
+      font-size: 20px;
+      color: $tick-color;
+      opacity: 0.5;
+      padding-bottom: 3px;
+    }
+  }
+
+  .y_ticks {
+    font-size: 20px;
+    fill: $tick-color;
+    fill-opacity: 1;
+  }
+
+  .x_label {
+    color: $moreinfo-color;
+  }
+
+  .item, .active {
+    color: $moreinfo-color;
+  }
+
+  .domain {
+    display: none;
+  }
+
+}
