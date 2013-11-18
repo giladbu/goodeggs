@@ -33,6 +33,7 @@ class Dashing.Histogram extends Dashing.Widget
 
   onData: (event) ->
     if @graph
+      console.log(event)
       colorIndex = 0
       (@graph.series.pop() for series in @graph.series)
       (@graph.series.push($.extend(series,{color: series.color || @palette(colorIndex++)})) for series in event.series)

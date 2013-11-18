@@ -3,7 +3,7 @@ require 'dashing'
 
 configure do
   set :auth_token, 'YOUR_AUTH_TOKEN'
-
+  set :history, {}
   helpers do
     def protected!
      # Put any authentication code you want in here.
