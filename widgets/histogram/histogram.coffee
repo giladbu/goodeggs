@@ -21,20 +21,25 @@ class Dashing.Histogram extends Dashing.Widget
     )
 
     timeUnit = (new Rickshaw.Fixtures.Time()).unit('day')
-    timeUnit.formatter = (d) ->
-      d3.time.format('%a% %e')(d)
+    timeUnit.formatter = (d) =>
+      # Hack to fix timezone issue on heroku
+      d3.time.format('%a% %e')(@timeToUtc(d.getTime() / 1000))
     x_axis = new Rickshaw.Graph.Axis.Time(graph: @graph, timeUnit: timeUnit)
     y_axis = new Rickshaw.Graph.Axis.Y(graph: @graph, tickFormat: Rickshaw.Fixtures.Number.formatKMBT)
     hoverDetail = new Rickshaw.Graph.HoverDetail
       graph: @graph
-      xFormatter: (x) ->
-        timeUnit.formatter(new Date(x * 1000))
+      xFormatter: (x) =>
+        timeUnit.formatter(@timeToUtc(x))
     @graph.render()
 
   onData: (event) ->
     if @graph
-      console.log(event)
       colorIndex = 0
       (@graph.series.pop() for series in @graph.series)
       (@graph.series.push($.extend(series,{color: series.color || @palette(colorIndex++)})) for series in event.series)
       @graph.render()
+
+  # Hack to fix timezone issue on heroku
+  timeToUtc: (d) => new Date((d + @UTCOffset) * 1000)
+
+  UTCOffset: new Date().getTimezoneOffset() * 60
